@@ -1,0 +1,111 @@
+:root {
+  font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN',
+    'Hiragino Sans', Meiryo, sans-serif;
+}
+
+:where(input) {
+  border-width: 1px;
+  border-style: solid;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.app-title {
+  text-align: center;
+}
+
+.todo-container {
+  max-width: 960px;
+  margin-inline: auto;
+}
+
+.todo-form {
+  display: flex;
+  justify-content: center;
+
+  &[inert] {
+    opacity: 0.75;
+  }
+
+  > :is(._input, ._button) {
+    font-size: 1rem;
+    border-width: 1px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+
+  > ._input {
+    flex-basis: 90%;
+    padding: 16px 24px;
+    border-right: none;
+
+    &:user-valid {
+      color: green;
+      border-color: green;
+      
+      + button {
+        background-color: green;
+        border-color: green;
+        color: #fff;
+      }
+    }
+
+    &:user-invalid {
+      color: red;
+      border-color: red;
+      
+      + button {
+        background-color: red;
+        border-color: red;
+        color: #fff;
+      }
+    }
+  }
+
+  > ._button {
+    flex-basis: 10%;
+    padding: 16px;
+  } 
+}
+
+.todo-list {
+  width: 75%;
+  margin-top: 64px;
+  list-style: none;
+  margin-inline: auto;
+  border: solid 1px #ccc;
+  padding-left: 0;
+
+  > ._item {
+    display: flex;
+    justify-content: space-between;
+    cursor: grab;
+    padding: 16px; 
+
+    + & {
+      border-top: 1px solid #ccc;
+    }
+
+    button + button {
+      margin-left: 8px;
+    }
+
+    &.is-done {
+      color: green;
+      text-decoration: line-through;
+    }
+  }
+}
+
+.todo-notice {
+  text-align: center;
+  font-size: 14px;
+}
+
+.todo-message {
+  text-align: center;
+  font-size: 14px;
+}
+
