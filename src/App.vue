@@ -10,7 +10,7 @@ type todoItem = {
 
 type todoList = todoItem[]
 
-const todos = useStorage('todos', [] as todoList)
+const todos = useStorage<todoList>('todos', [])
 
 const disableForm = (form: HTMLFormElement) => {
   form.setAttribute('inert', 'true')
@@ -40,40 +40,59 @@ const createTodo = (event: Event) => {
 
   setTimeout(() => {
     resetForm(form)
-  }, 2000)
+  }, 1000)
 }
 
 const leftTodoCount = computed(() => {
   const filtered = todos.value.filter((todo) => todo.done === true)
+
   return todos.value.length - filtered.length
 })
 
 const doneCount = () => {
   const filtered = todos.value.filter((todo) => todo.done === true)
+
   return filtered.length
 }
 
 const toggleStatus = (id: string) => {
-  const target = todos.value.find((todo) => todo.id === id)!
+  const target = todos.value.find((todo) => todo.id === id)
+
+  if (!target) {
+    return
+  }
+
   target.done = !target.done
 }
 
 const deleteTodo = (id: string) => {
   const filtered = todos.value.filter((todo) => todo.id !== id)
+
   todos.value = [...filtered]
 }
 
 const onDragStart = (event: DragEvent, dragIndex: number) => {
-  const dataTransfer = event.dataTransfer as DataTransfer
+  const dataTransfer = event.dataTransfer
+
+  if (!dataTransfer) {
+    return
+  }
+
   dataTransfer.effectAllowed = 'move'
   dataTransfer.dropEffect = 'move'
   dataTransfer.setData('drag-index', String(dragIndex))
 }
 
 const onDrop = (event: DragEvent, dropIndex: number) => {
-  const dataTransfer = event.dataTransfer as DataTransfer
+  const dataTransfer = event.dataTransfer
+
+  if (!dataTransfer) {
+    return
+  }
+
   const index = Number(dataTransfer.getData('drag-index'))
   const deleted = todos.value.splice(index, 1)
+
   todos.value.splice(dropIndex, 0, deleted[0])
 }
 </script>
